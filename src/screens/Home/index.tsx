@@ -10,44 +10,48 @@ import {
 import { styles } from "./styles";
 import { Participant } from "../../components/Participant";
 
-export default function App() {
-  const [participants, setParticipants] = useState<string[]>([]);
-  const [participantName, setParticipantName] = useState("");
-  const [addedBy, setAddedBy] = useState<string>("");
+export default function App() { // Declaração do componente App
+  const [participants, setParticipants] = useState<string[]>([]); // Declara um estado chamado participants, inicializado como um array vazio
+  const [participantName, setParticipantName] = useState(""); // Declara um estado chamado participantName, inicializado como uma string vazia
+  const [addedBy, setAddedBy] = useState<string>(""); // Declara um estado chamado addedBy, inicializado como uma string vazia
 
-  function handlePartipantAdd() {
-    if (participants.includes(participantName)) {
+  function handlePartipantAdd() { // Função que adiciona participantes
+    if (!participantName.trim()) { // Verifica se o valor de participantName está vazio ou contém apenas espaços em branco
+      return Alert.alert("Erro", "Digite um nome de participante válido."); // Retorna um alerta com uma mensagem de erro
+    }
+  
+    if (participants.includes(participantName)) { // Verifica se já existe um participante com o mesmo nome na lista
       return Alert.alert(
         "Participante existe",
         "Já existe um participante com esse nome na lista."
-      );
+      ); // Retorna um alerta com uma mensagem informando que o participante já existe
     }
-
-    setParticipants((prevState) => [...prevState, participantName]);
-    setAddedBy(participantName);
-    setParticipantName("");
-
+  
+    setParticipants((prevState) => [...prevState, participantName]); // Adiciona o participante na lista de participantes usando o setState
+    setAddedBy(participantName); // Define o valor de addedBy como o nome do participante adicionado
+    setParticipantName(""); // Limpa o valor do input de nome do participante
+  
     Alert.alert(
       "Presença confirmada!",
       `Olá ${participantName}, a festa será realizada no dia 14/06 às 20h. O endereço é Rua blablabla, nº 123.`
-    );
+    ); // Retorna um alerta com uma mensagem de confirmação da presença
 
     // if (addedBy !== "" && addedBy !== participantName) {
     //   return Alert.alert(
     //     "Apenas um convidado por pessoa",
     //     "Você só pode adicionar um convidado na lista."
     //   );
-    // }
+    // } Comentado, pois a validação de adicionar apenas um convidado por pessoa não está sendo utilizada
   }
 
-  function handleParticipantRemove(name: string) {
-    Alert.alert("Remover", `Remover o participante ${name}?`, [
+  function handleParticipantRemove(name: string) { // Função que remove um participante da lista
+    Alert.alert("Remover", `Remover o participante ${name}?`, [ // Retorna um alerta perguntando se o usuário deseja remover o participante
       {
         text: "Sim",
         onPress: () =>
           setParticipants((prevState) =>
             prevState.filter((participant) => participant !== name)
-          ),
+          ), // Remove o participante da lista
       },
       {
         text: "Não",
